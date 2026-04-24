@@ -96,25 +96,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalImg = modal.querySelector('img');
     const closeBtn = modal.querySelector('.modal-close');
 
-    // Открытие по клику на gallery-item
+    // Открытие по клику/тапу на gallery-item
     document.querySelectorAll('.gallery-item').forEach(item => {
-        item.addEventListener('click', () => {
+        // Поддержка и клика и тача
+        const openModal = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             const img = item.querySelector('img');
             modalImg.src = img.src;
             modalImg.alt = img.alt;
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
-        });
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+        };
+        
+        item.addEventListener('click', openModal);
+        item.addEventListener('touchend', openModal);
     });
 
     // Закрытие по кнопке
-    closeBtn.addEventListener('click', (e) => {
+    const closeModalBtn = (e) => {
+        e.preventDefault();
         e.stopPropagation();
         closeModal();
-    });
+    };
+    
+    closeBtn.addEventListener('click', closeModalBtn);
+    closeBtn.addEventListener('touchend', closeModalBtn);
 
-    // Закрытие по клику на фон
+    // Закрытие по клику/тапу на фон
     modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    
+    modal.addEventListener('touchend', (e) => {
         if (e.target === modal) closeModal();
     });
 
@@ -125,6 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function closeModal() {
         modal.classList.remove('active');
-        document.body.style.overflow = 'auto';
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
     }
 });

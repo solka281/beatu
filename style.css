@@ -760,6 +760,7 @@ footer a:hover {
     align-items: center;
     z-index: 10000;
     animation: fadeIn 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .modal.active {
@@ -770,6 +771,7 @@ footer a:hover {
     position: relative;
     max-width: 90vw;
     max-height: 90vh;
+    touch-action: none;
 }
 
 .modal-content img {
@@ -778,13 +780,15 @@ footer a:hover {
     object-fit: contain;
     border-radius: 8px;
     display: block;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .modal-close {
     position: absolute;
     top: -45px;
     right: 0;
-    background: none;
+    background: rgba(255, 255, 255, 0.1);
     border: none;
     color: white;
     font-size: 1.8rem;
@@ -796,9 +800,28 @@ footer a:hover {
     justify-content: center;
     border-radius: 50%;
     transition: background 0.2s, transform 0.2s;
+    -webkit-tap-highlight-color: transparent;
+    z-index: 10001;
 }
 
-.modal-close:hover {
-    background: rgba(255, 255, 255, 0.2);
+.modal-close:hover,
+.modal-close:active {
+    background: rgba(255, 255, 255, 0.3);
     transform: rotate(90deg);
+}
+
+@media (max-width: 768px) {
+    .modal-close {
+        top: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.6);
+        width: 50px;
+        height: 50px;
+        font-size: 2rem;
+    }
+    
+    .modal-content img {
+        max-width: 95vw;
+        max-height: 80vh;
+    }
 }
