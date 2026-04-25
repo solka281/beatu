@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const modalImg = modal.querySelector('img');
     const closeBtn = modal.querySelector('.modal-close');
+    let scrollPosition = 0;
 
     // Открытие по клику/тапу на gallery-item
     document.querySelectorAll('.gallery-item').forEach(item => {
@@ -102,12 +103,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const openModal = (e) => {
             e.preventDefault();
             e.stopPropagation();
+            
+            // Сохраняем текущую позицию скролла
+            scrollPosition = window.pageYOffset;
+            
             const img = item.querySelector('img');
             modalImg.src = img.src;
             modalImg.alt = img.alt;
             modal.classList.add('active');
+            
+            // Блокируем скролл без изменения позиции
             document.body.style.overflow = 'hidden';
             document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollPosition}px`;
             document.body.style.width = '100%';
         };
         
@@ -141,8 +149,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function closeModal() {
         modal.classList.remove('active');
+        
+        // Восстанавливаем скролл на прежнюю позицию
         document.body.style.overflow = '';
         document.body.style.position = '';
+        document.body.style.top = '';
         document.body.style.width = '';
+        
+        window.scrollTo(0, scrollPosition);
     }
 });
